@@ -1,7 +1,18 @@
-CYCLONE Simulator - install package
-1. Create a free GitHub account and a new PUBLIC repository (e.g. cyclone).
-2. Add file > Upload files: upload everything in this folder (index.html, sw.js, manifest.webmanifest, 3 icons). Commit.
-3. Settings > Pages > Source: Deploy from branch, Branch: main, folder: / (root). Save.
-4. After ~1 minute open https://YOUR-NAME.github.io/cyclone/ in Chrome on Android.
-5. Menu (three dots) > Install app. Open it once online; afterwards it works offline.
-To update later: re-upload a new index.html and change V='cyclone-v2' in sw.js to v3.
+CYCLONE Simulator - complete package for GitHub Pages
+
+FILES (upload all 7 files, no folders):
+  index.html, sw.js, manifest.webmanifest,
+  icon-192.png, icon-512.png, icon-maskable-512.png, README.txt
+
+FIRST TIME
+1. Unzip this package.
+2. GitHub: open your repository (belayapple/CYCLONE) > Add file > Upload files.
+3. Drag all 7 files in, then Commit changes. Same names replace the old files.
+4. Settings > Pages: Deploy from a branch, main, / (root). Save.
+5. Open https://belayapple.github.io/CYCLONE/ in Chrome, then tap Install.
+
+UPDATING LATER
+Upload the new index.html and sw.js (they replace the old ones). Installed apps update
+the next time they are opened online. Close and reopen the app once if it still looks old.
+
+Version: cache name in sw.js is cyclone-v8.

@@ -17,7 +17,9 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
 body{display:flex;flex-direction:column;height:100dvh;user-select:none;-webkit-user-select:none}
 header{display:flex;align-items:center;gap:8px;padding:4px 6px 4px 14px;padding-top:max(4px,env(safe-area-inset-top));background:var(--panel);border-bottom:1px solid var(--line);min-height:56px}
 header b{font-size:16px;letter-spacing:.04em;color:var(--acc)}
-header .sub{color:var(--mut);font-size:12px}
+header .sub{color:var(--mut);font-size:12px;min-width:0;max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#saveb svg{display:block;margin:auto}
+.lib{display:flex;gap:6px;margin-bottom:6px}.lib .o{flex:1;text-align:left;min-width:0}.lib .o b,.lib .o span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lib .d{min-width:56px;color:var(--bad)}
 .sp{flex:1}
 button{font:inherit;color:inherit;background:none;border:1px solid var(--line);border-radius:10px;padding:6px 14px;min-height:48px;cursor:pointer}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
@@ -83,16 +85,75 @@ tr.best td{background:var(--accsoft);font-weight:600}
 .play{display:flex;align-items:center;gap:8px;margin-top:8px}
 .play input[type=range]{padding:0;min-height:48px;accent-color:var(--acc);border:none;background:none}
 .node text{pointer-events:none;fill:var(--ink)}
+.node text.lbl{paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+#report .node text.lbl{stroke:#fff}
 .node{cursor:pointer}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:10}
 #modal[hidden]{display:none}
 #modal .card{background:var(--panel);width:min(560px,100%);max-height:88dvh;overflow:auto;border-radius:14px 14px 0 0;padding:14px;user-select:text;-webkit-user-select:text}
 #modal textarea{height:160px;font:12px/1.3 ui-monospace,Consolas,monospace}
+
+#inst{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;background:var(--acc);color:var(--accink);font-size:14px}
+#inst[hidden]{display:none}
+#inst span{flex:1}
+#inst button{min-height:48px;border:none;border-radius:24px;padding:0 18px;font-weight:700;background:var(--accink);color:var(--acc)}
+#inst button.x{background:none;color:inherit;padding:0 12px;font-size:20px}
+
+#report{display:none}
+@media print{
+ html,body{height:auto!important;overflow:visible!important;background:#fff!important;color:#000}
+ body{display:block!important;user-select:text}
+ body>*:not(#report){display:none!important}
+ #report{display:block!important}
+}
+#report{--bg:#f4f6f8;--panel:#fff;--ink:#16202e;--mut:#5b6778;--line:#c9d1db;--acc:#0f6b5c;--accsoft:#e0f0ec;--accink:#fff;--q:#94540a;--qf:#fbefdc;--n:#2c5aa6;--nf:#e3ecf9;--c:#0f6b5c;--cf:#dcefeb;--f:#7a4aa3;--ff:#eee4f6;--arc:#69758a;--bad:#b3261e;--grid:#e6eaf0;
+ font:10.5pt/1.45 Arial,Helvetica,sans-serif;color:#16202e;background:#fff}
+#report h1{font-size:20pt;margin:0 0 2pt;color:#0f6b5c}
+#report h2{font-size:13pt;margin:16pt 0 6pt;padding-bottom:3pt;border-bottom:1.5pt solid #0f6b5c;break-after:avoid}
+#report h3{font-size:10.5pt;margin:10pt 0 4pt;break-after:avoid}
+#report p{margin:0 0 6pt}
+#report .meta{color:#5b6778;font-size:9.5pt;margin-bottom:8pt}
+#report table{width:100%;border-collapse:collapse;font-size:9.5pt;margin:4pt 0 8pt}
+#report th,#report td{border:.5pt solid #c9d1db;padding:3pt 5pt;text-align:right}
+#report th{background:#e0f0ec;color:#16202e;font-weight:700}
+#report td:first-child,#report th:first-child,#report td.l,#report th.l{text-align:left}
+#report tr{break-inside:avoid}
+#report tr.best td{background:#e0f0ec;font-weight:700}
+#report figure{margin:6pt 0;break-inside:avoid}
+#report figcaption{font-size:9pt;color:#5b6778;margin-top:3pt}
+#report .big{font-size:22pt;font-weight:700;color:#0f6b5c}
+#report .box{border:.75pt solid #c9d1db;border-radius:4pt;padding:6pt 8pt;background:#f7f9fb;break-inside:avoid;margin:6pt 0}
+#report .leg{display:grid;grid-template-columns:34pt 1fr;gap:4pt 8pt;align-items:center;font-size:9.5pt}
+#report .leg svg{width:34pt;height:28pt}
+#report .warn{color:#b3261e}
+#report .foot{margin-top:14pt;font-size:8.5pt;color:#5b6778;border-top:.5pt solid #c9d1db;padding-top:4pt}
+@page{margin:14mm;@bottom-center{content:"Page " counter(page) " of " counter(pages);font-size:8pt;color:#5b6778}}
+
+#watch{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+#watch[hidden]{display:none}
+#watch .wbar{display:flex;align-items:center;gap:8px;padding:4px 6px;background:var(--panel);border-bottom:1px solid var(--line)}
+#watch .wbar button{min-width:48px;border:none;font-size:22px;border-radius:24px}
+#watch .wt{flex:1;min-width:0}#watch .wt b{display:block;font-size:18px}#watch .wt span{display:block;font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#watch .wstage{flex:1;min-height:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+#wsvg{width:100%;height:100%;display:block}
+#watch .wctl{background:var(--panel);border-top:1px solid var(--line);padding:6px 10px 8px}
+#watch .wrow{display:flex;align-items:center;gap:8px}
+#watch .wrow button{min-height:48px}
+#wplay{min-width:56px;border-radius:28px;font-size:20px}
+#wscrub{flex:1;min-height:48px;padding:0}
+#watch .wspd button{padding:0 12px;min-width:48px;font-size:13px}
+#watch .wspd button.on{border-color:var(--acc);background:var(--accsoft);font-weight:700}
+#wsvg .node.pop{animation:wpop .5s ease-out;transform-box:fill-box;transform-origin:center}
+@keyframes wpop{0%{transform:scale(1)}35%{transform:scale(1.22)}100%{transform:scale(1)}}
+#wsvg line.flow{stroke-dasharray:7 5;animation:wdash .7s linear infinite;stroke:var(--acc)}
+@keyframes wdash{to{stroke-dashoffset:-12}}
 </style>
 </head>
 <body>
+<div id="inst" hidden><span id="instT">Install CYCLONE on this device</span><button id="instB">Install</button><button class="x" id="instX" aria-label="Dismiss">✕</button></div>
 <header role="banner">
   <b>CYCLONE</b><span class="sub">network simulator</span><span class="sp"></span>
+  <button id="saveb" aria-label="Save network" title="Save"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3h12l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></svg></button>
   <button id="undo" aria-label="Undo last change" title="Undo">↶</button>
   <button id="menu" aria-label="Menu: examples, new network, import and export" aria-haspopup="dialog">⋯</button>
 </header>
@@ -131,6 +192,8 @@ tr.best td{background:var(--accsoft);font-weight:600}
   </div>
   <div id="body"></div>
 </section>
+<div id="report" aria-hidden="true"></div>
+<div id="watch" role="dialog" aria-modal="true" aria-label="Simulation replay" hidden><div class="wbar"><button id="wx" aria-label="Close replay">✕</button><div class="wt"><b id="wclock"></b><span id="wprod"></span></div></div><div class="wstage"><svg id="wsvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated network diagram"><defs><marker id="wah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0,0L10,5L0,10z" fill="var(--arc)"/></marker></defs><g id="wworld"></g></svg></div><div class="wctl"><div class="wrow"><button id="wplay" aria-label="Play or pause">❚❚</button><input id="wscrub" type="range" min="0" max="1" step="any" value="0" aria-label="Simulation time"></div><div class="wrow wspd" style="margin-top:4px"><span class="mut" style="font-size:13px">Speed</span></div></div></div>
 <div id="modal" hidden role="dialog" aria-modal="true" aria-label="Menu"><div class="card" id="modalcard"></div></div>
 
 <script>
@@ -257,7 +320,7 @@ const EX={excavator:{title:'Excavator and haul trucks',sub:'A simple loader and 
   earth:{title:'Earthmoving with dozers and spotter',sub:'Halpin Fig 20.5 structure · durations are placeholders, not from the book',build:earthModel},
   scraper:{title:'Scrapers and a pusher dozer',sub:'Halpin Exercise 20.2 · hand-calculated balance point: 11 scrapers',build:scraperModel},
   pert:{title:'PERT network as CYCLONE',sub:'Halpin Fig 20.15 · triangular durations, 100 projects per run',build:pertModel}};
-function blankModel(){return{nid:1,aid:1,settings:{horizon:480,reps:30,seed:7,load:12,unit:'m³',tunit:'min',stopMode:'time',cycles:100},nodes:[],arcs:[]};}
+function blankModel(){return{nid:1,aid:1,settings:{horizon:480,reps:30,seed:7,load:12,unit:'m³',tunit:'min',stopMode:'time',cycles:100,out:(()=>{try{return JSON.parse(localStorage.getItem('cyclone-out')||'null')||undefined;}catch(e){return undefined;}})()},nodes:[],arcs:[]};}
 const nodeById=id=>model.nodes.find(n=>n.id===id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=(x,d=1)=>Number.isFinite(x)?x.toFixed(d):'–';
@@ -286,20 +349,20 @@ function nodeSvg(n,i){
   if(n.type==='queue'){const g=Math.max(1,Math.round(n.gen||1));
     if(ring)s+=`<circle cx="${n.x}" cy="${n.y}" r="35" ${ring}/>`;
     s+=`<circle cx="${n.x}" cy="${n.y}" r="28" fill="${cf}" stroke="${c}" stroke-width="2.5"/><line x1="${n.x+14}" y1="${n.y+14}" x2="${n.x+25}" y2="${n.y+25}" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`;
-    s+=T(n.x,n.y-13,n.num,10,500,mut)+T(n.x,n.y+4,lv!==null?lv:n.init,18,700)+T(n.x,n.y+43,esc(n.name.slice(0,18)),12,400);
-    if(g>1)s+=T(n.x,n.y+57,`GEN ${g}`,10,600,mut);
+    s+=T(n.x,n.y-13,n.num,10,500,mut)+T(n.x,n.y+4,lv!==null?lv:n.init,18,700)+T(n.x,n.y+43,esc(n.name.slice(0,18)),12,400,'class="lbl"');
+    if(g>1)s+=T(n.x,n.y+57,`GEN ${g}`,11,600,mut+' class="lbl"');
   }else if(n.type==='func'||n.type==='con'){
     if(ring)s+=`<circle cx="${n.x}" cy="${n.y}" r="29" ${ring}/>`;
     s+=`<circle cx="${n.x}" cy="${n.y}" r="22" fill="${cf}" stroke="${c}" stroke-width="2.5"/>`+T(n.x,n.y,lv!==null?lv:n.num,14,700);
     if(n.type==='func')s+=`<path d="M${n.x} ${n.y-22}V${n.y-48}" stroke="${c}" stroke-width="2"/><path d="M${n.x} ${n.y-48}L${n.x+18} ${n.y-41}L${n.x} ${n.y-34}Z" fill="${c}"/>`;
-    s+=T(n.x,n.y+36,esc(n.name.slice(0,18)),12,400);
-    if(n.type==='con')s+=T(n.x,n.y+49,`CON ${Math.max(1,Math.round(n.k||1))}`,10,600,mut);
+    s+=T(n.x,n.y+36,esc(n.name.slice(0,18)),12,400,'class="lbl"');
+    if(n.type==='con')s+=T(n.x,n.y+49,`${Math.max(1,Math.round(n.k||1))} → 1`,11,600,mut+' class="lbl"');
   }else{const comb=n.type==='combi';
     if(ring)s+=`<rect x="${n.x-61}" y="${n.y-31}" width="122" height="62" rx="6" ${ring}/>`;
     s+=`<rect x="${n.x-54}" y="${n.y-24}" width="108" height="48" rx="2" fill="${busy?c:cf}" fill-opacity="${busy?.28:1}" stroke="${c}" stroke-width="2.5"/>`;
     if(comb)s+=`<line x1="${n.x-54}" y1="${n.y-6}" x2="${n.x-36}" y2="${n.y-24}" stroke="${c}" stroke-width="2.5"/>`;
     s+=T(n.x,n.y+4,esc(n.name.slice(0,14)),13,600)+`<text x="${n.x+50}" y="${n.y-14}" text-anchor="end" dominant-baseline="central" font-size="12" ${mut}>${n.num}</text>`;
-    s+=T(n.x,n.y+39,esc(distText(n)),11,400,mut);
+    s+=T(n.x,n.y+39,esc(distText(n)),11,400,mut+' class="lbl"');
     if(lv!==null&&lv>0)s+=`<circle cx="${n.x+54}" cy="${n.y-24}" r="11" fill="var(--acc)"/>`+T(n.x+54,n.y-24,lv,12,700,'style="fill:var(--accink)"');
   }
   return s+'</g>';
@@ -317,6 +380,7 @@ function render(){
   $('#empty').hidden=model.nodes.length>0;
   const cx=$('#ctx');cx.hidden=!(sel&&tool==='select');
   const hint={link:linkFrom?'Now tap the node to link to':'Link: tap the source node, then the target',delete:'Delete: tap a node or arrow to remove it',select:''}[tool];
+  const st=document.querySelector('header .sub');if(st)st.textContent=model.name||'network simulator';
   $('#hint').textContent=hint||(tipSeen?'':'Tip: tap a node to edit it · drag to move · pinch to zoom');
 }
 function apply(){world.setAttribute('transform',`translate(${view.x} ${view.y}) scale(${view.k})`);$('#bg').setAttribute('transform',`translate(${view.x} ${view.y}) scale(${view.k})`);}
@@ -376,7 +440,7 @@ window.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select
 /* ---------- panel ---------- */
 function setTab(t,open){if(t!==tab)body.scrollTop=0;tab=t;if(open)$('#sheet').classList.remove('col');document.querySelectorAll('#tabs [data-tab]').forEach(b=>{b.classList.toggle('on',b.dataset.tab===t);b.setAttribute('role','tab');b.setAttribute('aria-selected',b.dataset.tab===t);});renderTab();}
 function renderTab(){body.innerHTML=tab==='edit'?tabEdit():tab==='run'?tabRun():tabRes();if(tab==='run')syncPlay();}
-const fld=(label,p,val,extra='')=>`<label class="f"><span>${label}</span><input data-p="${p}" type="${extra.includes('text')?'text':'number'}" inputmode="decimal" step="any" value="${esc(val)}"></label>`;
+const fld=(label,p,val,extra='')=>`<label class="f"><span>${label}</span>${extra.includes('text')?`<input data-p="${p}" type="text" inputmode="text" autocapitalize="sentences" autocomplete="off" enterkeyhint="done" value="${esc(val)}">`:`<input data-p="${p}" type="number" inputmode="decimal" enterkeyhint="done" step="any" value="${esc(val)}">`}</label>`;
 const DISTS={fixed:['Fixed','Value'],tri:['Triangular','Min','Most likely','Max'],uni:['Uniform','Min','Max'],norm:['Normal','Mean','Std dev'],exp:['Exponential','Mean']};
 function tabEdit(){
   if(!sel){return`<h4>Getting started</h4><p class="mut" style="margin:0 0 6px">Tap a node to edit it, drag to move it, drag the background to pan, pinch to zoom.</p>
@@ -386,7 +450,7 @@ function tabEdit(){
     return`<h4>Arrow</h4><p style="margin:0 0 10px"><b>${esc(A.name)}</b> → <b>${esc(B.name)}</b></p><button data-do="delarc" class="warn">Delete arrow</button>`;}
   const n=nodeById(sel.id);if(!n){sel=null;return tabEdit();}
   let h=`<h4><span class="tag" style="background:var(--${SUF[n.type]}f);color:var(--${SUF[n.type]})">${TNAME[n.type]}</span></h4><p class="note" style="margin-top:0">${HELP[n.type]}</p><div class="row">${fld('Name','n.name',n.name,'text')}${fld(n.type==='combi'?'No. (priority)':'No.','n.num',n.num)}`;
-  if(n.type==='queue')h+=fld('Units at start','n.init',n.init)+fld('GEN: units per arrival','n.gen',n.gen||1);
+  if(n.type==='queue')h+=fld('Units at start','n.init',n.init)+fld('GEN (per arrival)','n.gen',n.gen||1);
   if(n.type==='con')h+=fld('Units to consolidate (n)','n.k',n.k||1);
   h+='</div>';
   if(n.type==='combi'||n.type==='normal'){const D=DISTS[n.dist];
@@ -397,8 +461,8 @@ function tabRun(){const S=model.settings,cnt=S.stopMode==='count';
   return`<div class="row"><label class="f" style="flex-basis:170px"><span>Stop when</span><select data-p="s.stopMode"><option value="time" ${!cnt?'selected':''}>Time limit reached</option><option value="count" ${cnt?'selected':''}>Counter reaches N cycles</option></select></label>
   ${cnt?fld('Cycles (N)','s.cycles',S.cycles):''}${fld(cnt?'Time limit (safety)':'Simulated time','s.horizon',S.horizon)}<label class="f"><span>Time unit</span><select data-p="s.tunit">${['min','h','s','day'].map(u=>`<option ${u===S.tunit?'selected':''}>${u}</option>`).join('')}</select></label>${fld('Runs','s.reps',S.reps)}${fld('Random seed','s.seed',S.seed)}</div>
   <div class="row" style="margin-top:8px">${fld('Quantity per count','s.load',S.load)}${fld('Quantity unit','s.unit',S.unit,'text')}</div>
-  <div style="margin-top:12px;display:flex;gap:8px"><button class="pri" data-do="run" style="flex:1">Run simulation</button></div>
-  <div id="playbox" ${trace?'':'hidden'}><h4>Replay (first run)</h4><div class="play"><button data-do="play" id="playbtn" style="min-width:44px">${playing?'❚❚':'▶'}</button><input id="scrub" type="range" min="0" max="${playEnd()}" step="any" value="${playT}" style="flex:1"><span id="plab" class="mut" style="min-width:68px;text-align:right"></span></div>
+  <div style="margin-top:12px;display:flex;gap:8px"><button class="pri" data-do="run" style="flex:1">Run simulation</button><button data-do="settings">Settings…</button></div>
+  <div id="playbox" ${trace?'':'hidden'}><h4>Replay (first run)</h4><button data-do="watch" class="pri" style="width:100%;margin-bottom:8px">▶ Watch full screen</button><div class="play"><button data-do="play" id="playbtn" style="min-width:44px">${playing?'❚❚':'▶'}</button><input id="scrub" type="range" min="0" max="${playEnd()}" step="any" value="${playT}" style="flex:1"><span id="plab" class="mut" style="min-width:68px;text-align:right"></span></div>
   <div class="play"><span class="mut">Speed</span>${[2,8,30,120].map(v=>`<button data-speed="${v}" style="padding:4px 10px;min-height:32px;${v===speed?'border-color:var(--acc);background:var(--accsoft)':''}">${v}×</button>`).join('')}</div>
   <p class="note">Numbers on queues are units waiting. Badges on tasks show how many are in progress. Counters show the count.</p></div>`;}
 const playEnd=()=>trace?trace.t[trace.t.length-1]:model.settings.horizon;
@@ -410,17 +474,17 @@ function curveSvg(cv){const W=320,H=110,pl=34,pb=18,pt=6,pr=6,N=cv.N,T=cv.T||1;
   <polyline points="${pts}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linejoin="round"/>
   <text x="${pl-4}" y="${pt+6}" text-anchor="end" font-size="10" style="fill:var(--mut)">${N}</text><text x="${pl-4}" y="${H-pb}" text-anchor="end" font-size="10" style="fill:var(--mut)">0</text>
   <text x="${pl}" y="${H-4}" font-size="10" style="fill:var(--mut)">0</text><text x="${W-pr}" y="${H-4}" text-anchor="end" font-size="10" style="fill:var(--mut)">${fmt(T,0)} ${esc(model.settings.tunit)}</text></svg>`;}
-function tabRes(){const R=results;let h='';
+function tabRes(){const R=results,O=ov(R?R.S:model.settings,R?R.per:(PER[model.settings.tunit]||'hour'));let h=R?'<div class="row" style="margin:0 0 8px"><button data-do="pdf" class="pri" style="flex:1">Export PDF report…</button><button data-do="csv" style="flex:1">Copy for Excel (CSV)</button></div>':'';
   if(!R)h+=`<p class="mut" style="margin:0 0 4px">No results yet. Open the <b>Run</b> tab and tap Run simulation.</p>`;
   else{const S=R.S;
     if(R.stale)h+=`<p class="warn note" style="margin-top:0">The model was edited after this run. Run again to refresh these results.</p>`;
     if(R.capped)h+=`<p class="warn note">${R.capped} run${R.capped>1?'s':''} stopped at the safety limit of 400,000 task starts, so the results cover only the time actually simulated (about ${fmt(R.Tavg,1)} ${esc(S.tunit)}).</p>`;
-    if(R.counters.length){const c0=R.counters[0];h+=`<div class="big">${fmt(c0.rate.m,2)} <small>${esc(S.unit)}/${R.per}</small></div><div class="mut">${fmt(c0.perT,4)} per ${esc(S.tunit)} ${R.reps>1?` · ± ${fmt(c0.rate.ci,2)} (95%)`:''} · ${esc(c0.name)}</div>
+    if(R.counters.length){const c0=R.counters[0];h+=`<div class="big">${fmt(c0.rate.m*O.k,O.d)} <small>${esc(O.u)}/${O.per}</small></div><div class="mut">${fmt(c0.perT*O.kT,4)} ${esc(O.u)}/${esc(S.tunit)} ${R.reps>1?` · ± ${fmt(c0.rate.ci*O.k,O.d)} (95%)`:''} · ${esc(c0.name)}</div>${O.note?`<div class="mut">${esc(O.note)}</div>`:''}
       <div class="mut">${R.reps} run${R.reps>1?'s':''} · ${fmt(R.Tavg,1)} ${esc(S.tunit)} simulated · ${fmt(c0.cyc,2)} ${esc(S.tunit)} per count</div>`;
       if(R.incomplete)h+=`<p class="warn note">${R.incomplete} run${R.incomplete>1?'s':''} reached the time limit before ${S.cycles} cycles.</p>`;
       if(R.curve)h+=`<h4>Cumulative count (first run)</h4>${curveSvg(R.curve)}`;}
     else h+=`<p class="warn">Add a Counter node after the last activity so production can be measured.</p>`;
-    if(R.counters.length>1||R.counters.length){h+=`<h4>Counters</h4><table><tr><th>Counter</th><th>Count / run</th><th>${esc(S.unit)} / ${R.per}</th></tr>${R.counters.map(c=>`<tr><td>${c.num} ${esc(c.name)}</td><td>${fmt(c.cnt.m,1)}</td><td>${fmt(c.rate.m,2)}</td></tr>`).join('')}</table>`;}
+    if(R.counters.length>1||R.counters.length){h+=`<h4>Counters</h4><table><tr><th>Counter</th><th>Count / run</th><th>${esc(O.u)} / ${O.per}</th></tr>${R.counters.map(c=>`<tr><td>${c.num} ${esc(c.name)}</td><td>${fmt(c.cnt.m,1)}</td><td>${fmt(c.rate.m*O.k,O.d)}</td></tr>`).join('')}</table>`;}
     h+=`<h4>Activities</h4><table><tr><th>Task</th><th>Starts / run</th><th>Avg busy</th></tr>${R.tasks.map(t=>`<tr><td>${t.num} ${esc(t.name)}</td><td>${fmt(t.starts,1)}</td><td>${fmt(t.busy,2)}${t.type==='combi'&&t.busy<=1?` (${fmt(t.busy*100,0)}%)`:''}</td></tr>`).join('')}</table>`;
     h+=`<h4>Queues (idle units)</h4><table style="font-size:12px"><tr><th>Queue</th><th>Avg</th><th>Max</th><th>% not empty</th><th>Avg wait</th><th>At end</th></tr>${R.queues.map(q=>`<tr><td>${q.num} ${esc(q.name)}</td><td>${fmt(q.len,2)}</td><td>${fmt(q.max,0)}</td><td>${fmt(q.ne,1)}</td><td>${fmt(q.wait,1)}</td><td>${fmt(q.end,0)}</td></tr>`).join('')}</table><p class="note">Wait is in ${esc(S.tunit)}.</p>`;
     (R.insights||[]).forEach(t=>{h+=`<p class="note">${t}</p>`;});}
@@ -430,7 +494,7 @@ function tabRes(){const R=results;let h='';
   else{h+=`<p class="note" style="margin-top:0">Re-runs the model with different starting units in one queue, e.g. 1 to 12 trucks, to find how many are enough.</p><div class="row"><label class="f" style="flex-basis:150px"><span>Queue</span><select id="swq">${qs.map(q=>`<option value="${q.id}" ${sweepSel===q.id?'selected':''}>${q.num} ${esc(q.name)}</option>`).join('')}</select></label><label class="f"><span>From</span><input id="swa" type="number" value="${sweepA}"></label><label class="f"><span>To</span><input id="swb" type="number" value="${sweepB}"></label></div>
     <div style="margin-top:8px"><button data-do="sweep">Run sweep</button></div>`;
     if(sweepRows){const mx=Math.max(...sweepRows.map(r=>r.rate)),best=sweepRows.find(r=>r.rate>=.95*mx);
-      h+=`<table style="margin-top:8px"><tr><th>Units</th><th>${esc(model.settings.unit)}/${PER[model.settings.tunit]||'hour'}</th><th style="width:40%"></th><th>Gain</th></tr>${sweepRows.map((r,i)=>`<tr class="${r===best?'best':''}"><td>${r.v}${r===best?' ★':''}</td><td>${fmt(r.rate,2)}</td><td><div class="bar" style="width:${mx>0?r.rate/mx*100:0}%"></div></td><td>${i?`${r.rate-sweepRows[i-1].rate>=0?'+':''}${fmt(r.rate-sweepRows[i-1].rate,2)}`:'–'}</td></tr>`).join('')}</table><p class="note">★ is the smallest number reaching 95% of the best result. More units beyond that add little.</p>`;}}
+      h+=`<table style="margin-top:8px"><tr><th>Units</th><th>${esc(O.u)}/${O.per}</th><th style="width:40%"></th><th>Gain</th></tr>${sweepRows.map((r,i)=>`<tr class="${r===best?'best':''}"><td>${r.v}${r===best?' ★':''}</td><td>${fmt(r.rate*O.k,O.d)}</td><td><div class="bar" style="width:${mx>0?r.rate/mx*100:0}%"></div></td><td>${i?`${r.rate-sweepRows[i-1].rate>=0?'+':''}${fmt((r.rate-sweepRows[i-1].rate)*O.k,O.d)}`:'–'}</td></tr>`).join('')}</table><p class="note">★ is the smallest number reaching 95% of the best result. More units beyond that add little.</p>`;}}
   return h;}
 let sweepSel=null,sweepA=1,sweepB=12,sweepRows=null;
 
@@ -444,6 +508,10 @@ body.addEventListener('change',e=>{if(['s.tunit','n.dist','s.stopMode'].includes
 body.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.dataset.speed){speed=+b.dataset.speed;renderTab();return;}
   switch(b.dataset.do){
+    case'pdf':openReport();break;
+    case'csv':copyCsv();break;
+    case'settings':openSettings();break;
+    case'watch':openWatch();break;
     case'delnode':delNode(sel.id);render();save();renderTab();break;
     case'delarc':delArc(sel.id);render();save();renderTab();break;
     case'run':runAll();break;
@@ -481,7 +549,7 @@ async function runAll(){const err=checkModel();if(err)return toast(err);
       if(a.len<.5&&b.len>1)res.insights.push(`At <b>${esc(c.name)}</b>, “${esc(a.name)}” is almost always empty (avg ${fmt(a.len,2)}) while “${esc(b.name)}” averages ${fmt(b.len,1)}. The first is the bottleneck and the second is in surplus.`);
       else if(a.len>=.5)res.insights.push(`At <b>${esc(c.name)}</b>, every feeding queue usually holds units, so the task itself limits the rate.`);}});
   if(tr&&tr.c.length){const N=tr.c.length,step=Math.max(1,Math.ceil(N/1200)),pts=[];for(let i=step-1;i<N;i+=step)pts.push([tr.c[i],i+1]);if(!pts.length||pts[pts.length-1][1]!==N)pts.push([tr.c[N-1],N]);res.curve={pts,N,T:runs[0].T};}
-  results=res;trace=tr&&tr.t.length?tr:null;playT=0;playing=false;live=null;
+  results=res;trace=tr&&tr.t.length?tr:null;playT=0;playing=false;live=null;setTimeout(()=>{if(trace)toast('Simulation finished','Watch',openWatch);},60);
   if(trace){live=trace.v[0];}
   render();setTab('res',true);toast(`Done: ${S.reps} run${S.reps>1?'s':''}`);}
 async function runSweep(){const err=checkModel();if(err)return toast(err);
@@ -501,9 +569,201 @@ function frame(ts){if(!playing){lastF=0;return;}const dt=lastF?(ts-lastF)/1000:0
   if(t>=end){setPlayT(end);playing=false;syncPlay();return;}setPlayT(t);requestAnimationFrame(frame);}
 function togglePlay(){if(!trace)return;if(playing){playing=false;}else{const end=Math.min(playEnd(),trace.t[trace.t.length-1]);if(playT>=end)playT=0;playing=true;lastF=0;requestAnimationFrame(frame);}syncPlay();}
 
+
+/* ---------- full-screen replay ---------- */
+let wOn=false,wPlaying=false,wT=0,wLast=0,wPrev=null,wPush=false,wSpeed=8;
+const SVGNS='http://www.w3.org/2000/svg',W_SPEEDS=[1,4,16,60,240];
+function wEnd(){return trace?trace.t[trace.t.length-1]:0;}
+function openWatch(){
+  if(!trace||!results){toast('Run the simulation first, then tap Watch');return;}
+  const nodes=model.nodes;if(!nodes.length)return;
+  wOn=true;$('#watch').hidden=false;if(!wPush){try{history.pushState({w:1},'');wPush=true;}catch(e){}}
+  const xs=nodes.map(n=>n.x),ys=nodes.map(n=>n.y),x0=Math.min(...xs)-90,x1=Math.max(...xs)+90,y0=Math.min(...ys)-80,y1=Math.max(...ys)+80;
+  $('#wsvg').setAttribute('viewBox',`${x0} ${y0} ${x1-x0} ${y1-y0}`);
+  const nm=new Map(nodes.map(n=>[n.id,n])),idx=new Map(nodes.map((n,i)=>[n.id,i]));let h='';
+  for(const a of model.arcs){const A=nm.get(a.from),B=nm.get(a.to);if(!A||!B)continue;let p1=edge(A,B.x,B.y),p2=edge(B,A.x,A.y);
+    if(model.arcs.some(o=>o.from===a.to&&o.to===a.from)){const dx=B.x-A.x,dy=B.y-A.y,d=Math.hypot(dx,dy)||1,ox=-dy/d*9,oy=dx/d*9;p1=[p1[0]+ox,p1[1]+oy];p2=[p2[0]+ox,p2[1]+oy];}
+    h+=`<line data-wa="${a.id}" data-src="${idx.get(a.from)}" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="var(--arc)" stroke-width="2" marker-end="url(#wah)"/>`;}
+  const keep={sel,live,linkFrom};sel=null;linkFrom=null;live=trace.v[0];
+  nodes.forEach((n,i)=>{h+=nodeSvg(n,i);});sel=keep.sel;live=keep.live;linkFrom=keep.linkFrom;
+  $('#wworld').innerHTML=h;wPrev=trace.v[0].map(x=>x[0]);
+  const speeds=W_SPEEDS.map(v=>v*(model.settings.tunit==='s'?1:1));
+  const want=wEnd()/30;wSpeed=speeds.find(v=>v>=want)||speeds[speeds.length-1];
+  const box=document.querySelector('#watch .wspd');box.querySelectorAll('button').forEach(b=>b.remove());
+  speeds.forEach(v=>{const b=document.createElement('button');b.textContent=v+'×';b.dataset.sp=v;b.onclick=()=>{wSpeed=v;wChips();};box.appendChild(b);});
+  wChips();$('#wscrub').max=wEnd();wT=0;wSet(0,true);wPlaying=true;wLast=0;$('#wplay').textContent='❚❚';requestAnimationFrame(wFrame);}
+function wChips(){document.querySelectorAll('#watch .wspd button').forEach(b=>b.classList.toggle('on',+b.dataset.sp===wSpeed));}
+function wSet(t,force){
+  wT=Math.max(0,Math.min(wEnd(),t));let lo=0,hi=trace.t.length-1;while(lo<hi){const mid=(lo+hi+1)>>1;if(trace.t[mid]<=wT)lo=mid;else hi=mid-1;}
+  const v=trace.v[lo],nodes=model.nodes,world=$('#wworld'),keep={sel,live,linkFrom};sel=null;linkFrom=null;live=v;
+  nodes.forEach((n,i)=>{if(force||wPrev[i]!==v[i][0]){const g=world.querySelector(`[data-n="${n.id}"]`);if(!g)return;
+    const tmp=document.createElementNS(SVGNS,'g');tmp.innerHTML=nodeSvg(n,i);const ng=tmp.firstChild;if(!force)ng.classList.add('pop');g.replaceWith(ng);}});
+  sel=keep.sel;live=keep.live;linkFrom=keep.linkFrom;
+  world.querySelectorAll('line[data-wa]').forEach(l=>{const i=+l.dataset.src,n=nodes[i];l.classList.toggle('flow',!!n&&(n.type==='combi'||n.type==='normal')&&v[i][0]>0);});
+  wPrev=v.map(x=>x[0]);
+  const S=model.settings,O=ov(S,results.per),ci=nodes.findIndex(n=>n.type==='func');
+  $('#wclock').textContent=`${S.tunit==='min'?'Time':'Time'} ${fmt(wT,1)} ${S.tunit}`;
+  $('#wprod').textContent=ci>=0?`${v[ci][0]} counts · ${fmt(v[ci][0]*S.load*O.cfg.factor,O.d)} ${O.u} so far`:'Add a Counter to see production';
+  $('#wscrub').value=wT;}
+function wFrame(ts){if(!wOn||!wPlaying){wLast=0;return;}const dt=wLast?(ts-wLast)/1000:0;wLast=ts;let t=wT+dt*wSpeed;
+  if(t>=wEnd()){wSet(wEnd());wPlaying=false;$('#wplay').textContent='↺';return;}wSet(t);requestAnimationFrame(wFrame);}
+function wToggle(){if(wPlaying){wPlaying=false;$('#wplay').textContent='▶';return;}if(wT>=wEnd())wSet(0,true);wPlaying=true;wLast=0;$('#wplay').textContent='❚❚';requestAnimationFrame(wFrame);}
+function closeWatch(fromPop){wOn=false;wPlaying=false;$('#watch').hidden=true;if(wPush&&!fromPop){wPush=false;try{history.back();}catch(e){}}else wPush=false;}
+$('#wx').onclick=()=>closeWatch();$('#wplay').onclick=wToggle;
+$('#wscrub').addEventListener('input',e=>{wPlaying=false;$('#wplay').textContent='▶';wSet(+e.target.value);});
+window.addEventListener('popstate',()=>{if(wOn)closeWatch(true);});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&wOn)closeWatch();});
 /* ---------- menu / import / export ---------- */
+
+
+/* ---------- output settings ---------- */
+const OUTK='cyclone-out';
+function outCfg(){const o=(model.settings&&model.settings.out)||{};return{basis:['auto','min','hour','shift','day'].includes(o.basis)?o.basis:'auto',shiftH:+o.shiftH>0?+o.shiftH:8,shifts:+o.shifts>0?Math.round(+o.shifts):1,unit:String(o.unit||'').slice(0,12),factor:+o.factor>0?+o.factor:1,eff:+o.eff>0&&+o.eff<=1.5?+o.eff:1,dec:[0,1,2,3].includes(+o.dec)?+o.dec:2};}
+function ov(S,per){const c=outCfg(),dayH=c.shiftH*c.shifts,legacyH=S.tunit==='day'?dayH:1,bh={min:1/60,hour:1,shift:c.shiftH,day:dayH};
+  let k=c.factor*c.eff,p=per;if(c.basis!=='auto'){k*=bh[c.basis]/legacyH;p=c.basis;}
+  const conv=c.unit&&c.factor!==1;
+  const note=[conv?`1 ${S.unit} = ${c.factor} ${c.unit}`:'',c.eff!==1?`efficiency ${c.eff}`:''].filter(Boolean).join(' · ');
+  return{k,kT:c.factor*c.eff,u:c.unit||S.unit,per:p,d:c.dec,eff:c.eff,cfg:c,note};}
+function openSettings(){const c=outCfg(),S=model.settings,card=$('#modalcard');
+  const opt=(v,t,cur)=>`<option value="${v}" ${String(cur)===String(v)?'selected':''}>${t}</option>`;
+  card.innerHTML=`<h4>Settings</h4><p class="note" style="margin-top:0">These change how results are shown. They do not change the simulation, so you do not need to run again.</p>
+  <h4>Results per</h4><div class="row"><label class="f"><span>Show production per</span><select id="sbasis">${opt('auto','Automatic (from time unit)',c.basis)}${opt('min','Minute',c.basis)}${opt('hour','Hour',c.basis)}${opt('shift','Shift',c.basis)}${opt('day','Working day',c.basis)}</select></label></div>
+  <div class="row" style="margin-top:8px"><label class="f"><span>Shift length (hours)</span><input id="sshift" type="number" inputmode="decimal" enterkeyhint="done" step="any" value="${c.shiftH}"></label><label class="f"><span>Shifts per day</span><input id="sshifts" type="number" inputmode="numeric" enterkeyhint="done" value="${c.shifts}"></label></div>
+  <h4>Convert quantity</h4><p class="note" style="margin-top:0">Example for mining: the model counts in ${esc(S.unit)}; to see tonnes, enter t and the density, for example 1.6 t per ${esc(S.unit)}.</p>
+  <div class="row"><label class="f"><span>Show results in (unit name)</span><input id="sunit" type="text" inputmode="text" autocapitalize="off" autocomplete="off" enterkeyhint="done" maxlength="12" value="${esc(c.unit)}" placeholder="${esc(S.unit)}"></label><label class="f"><span>1 ${esc(S.unit)} equals</span><input id="sfac" type="number" inputmode="decimal" enterkeyhint="done" step="any" value="${c.factor}"></label></div>
+  <div class="row" style="margin-top:6px"><button data-pre="t">Tonnes (1.6)</button><button data-pre="same">Same as input</button></div>
+  <h4>Efficiency</h4><p class="note" style="margin-top:0">Multiplies the results to allow for real working conditions, for example 0.83 for a 50-minute working hour. Use 1 for none.</p>
+  <div class="row"><label class="f" style="flex-basis:130px"><span>Efficiency factor</span><input id="seff" type="number" inputmode="decimal" enterkeyhint="done" step="any" value="${c.eff}"></label>${[1,.92,.83,.75].map(v=>`<button data-eff="${v}" style="align-self:flex-end">${v}</button>`).join('')}</div>
+  <h4>Display</h4><div class="row"><label class="f"><span>Decimal places</span><select id="sdec">${[0,1,2,3].map(v=>opt(v,v,c.dec)).join('')}</select></label></div>
+  <div style="display:grid;gap:8px;margin-top:12px"><button id="sok" class="pri">Apply</button><button id="scl2">Cancel</button></div>`;
+  showModal();
+  card.querySelector('[data-pre=t]').onclick=()=>{$('#sunit').value='t';$('#sfac').value='1.6';};
+  card.querySelector('[data-pre=same]').onclick=()=>{$('#sunit').value='';$('#sfac').value='1';};
+  card.querySelectorAll('[data-eff]').forEach(b=>b.onclick=()=>{$('#seff').value=b.dataset.eff;});
+  $('#scl2').onclick=()=>closeModal();
+  $('#sok').onclick=()=>{const o={basis:$('#sbasis').value,shiftH:+$('#sshift').value,shifts:+$('#sshifts').value,unit:$('#sunit').value.trim(),factor:+$('#sfac').value,eff:+$('#seff').value,dec:+$('#sdec').value};
+    if(!(o.shiftH>0&&o.shiftH<=24))return toast('Shift length must be between 0 and 24 hours');
+    if(!(o.shifts>=1&&o.shifts<=6))return toast('Shifts per day must be 1 to 6');
+    if(!(o.factor>0))return toast('The conversion must be above 0');
+    if(!(o.eff>0&&o.eff<=1.5))return toast('Efficiency should be above 0 and at most 1.5');
+    model.settings.out=o;try{localStorage.setItem(OUTK,JSON.stringify(o));}catch(e){}
+    save();closeModal();renderTab();toast('Settings applied');};}
+/* ---------- saved networks and files ---------- */
+const LIB='cyclone-lib';
+function libGet(){try{const a=JSON.parse(localStorage.getItem(LIB)||'[]');return Array.isArray(a)?a:[];}catch(e){return[];}}
+function libSet(a){try{localStorage.setItem(LIB,JSON.stringify(a));return true;}catch(e){return false;}}
+function fname(n){return String(n||'network').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_')||'network';}
+function saveLocal(name){name=String(name||'').trim()||'My network';model.name=name;const a=libGet(),i=a.findIndex(x=>x.name===name);
+  const rec={id:i>=0?a[i].id:Date.now(),name,t:Date.now(),n:model.nodes.length,model:JSON.parse(JSON.stringify(model))};
+  if(i>=0)a[i]=rec;else a.unshift(rec);const ok=libSet(a);if(ok){save();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(e){}}return ok;}
+function modelFile(name){return new File([JSON.stringify({...model,name},null,1)],fname(name)+'.cyclone.json',{type:'application/json'});}
+function downloadModel(name){const f=modelFile(name),a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+async function shareModel(name){try{await navigator.share({files:[modelFile(name)],title:name});}catch(e){if(e&&e.name!=='AbortError')toast('Sharing is not available here');}}
+function canShareFile(){try{return !!(navigator.canShare&&navigator.canShare({files:[modelFile('x')]}));}catch(e){return false;}}
+function openSave(){const card=$('#modalcard');
+  card.innerHTML=`<h4>Save this network</h4><div class="f"><span>Name</span><input id="sname" maxlength="60" value="${esc(model.name||'')}" placeholder="e.g. Pit A excavator and trucks"></div>
+  <div style="display:grid;gap:8px;margin-top:10px"><button id="sloc" class="pri">Save on this device</button><button id="sdl">Download as a file</button>${canShareFile()?'<button id="ssh">Share file (WhatsApp, Telegram, email)</button>':''}<button id="scl">Cancel</button></div>
+  <p class="note">Saved networks appear under ⋯ Menu, My networks. A downloaded file goes to your Downloads folder and can be opened on any device.</p>`;
+  showModal();const nm=()=>$('#sname').value.trim()||'My network';
+  $('#scl').onclick=()=>closeModal();
+  $('#sloc').onclick=()=>{if(saveLocal(nm())){closeModal();render();toast('Saved “'+model.name+'”');}else toast('Could not save here. Use Download as a file.');};
+  $('#sdl').onclick=()=>{model.name=nm();save();downloadModel(model.name);render();closeModal();toast('File downloaded');};
+  if($('#ssh'))$('#ssh').onclick=()=>{model.name=nm();save();render();shareModel(model.name);};
+  setTimeout(()=>{try{$('#sname').focus();}catch(e){}},50);}
+function libHtml(){const a=libGet();return `<h4>My networks</h4><div class="row" style="margin-bottom:8px"><button id="lsave" class="pri" style="flex:1">Save current…</button><button id="lfile" style="flex:1">Open file…</button></div><div class="row" style="margin-bottom:8px"><button id="lpdf" style="flex:1">Export PDF report…</button><button id="lset" style="flex:1">Settings…</button></div><input type="file" id="lpick" accept=".json,.cyclone,application/json" hidden>
+  ${a.length?a.map(r=>`<div class="lib"><button class="o" data-lo="${r.id}"><b>${esc(r.name)}</b><span class="mut" style="font-size:12px">${r.n} nodes · ${new Date(r.t).toLocaleDateString()}</span></button><button class="d" data-ld="${r.id}" aria-label="Delete ${esc(r.name)}">Delete</button></div>`).join(''):'<p class="note" style="margin-top:0">Nothing saved yet. Tap Save current to keep this network.</p>'}`;}
+function bindLib(card){
+  $('#lsave').onclick=openSave;$('#lpdf').onclick=openReport;$('#lset').onclick=openSettings;$('#lfile').onclick=()=>$('#lpick').click();
+  $('#lpick').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();
+    r.onload=()=>{try{const m=JSON.parse(r.result);if(!Array.isArray(m.nodes)||!Array.isArray(m.arcs))throw 0;pushUndo();if(!m.name)m.name=f.name.replace(/\.cyclone\.json$|\.json$|\.cyclone$/i,'');loadModel(m);closeModal();toast('Opened “'+(model.name||f.name)+'”');}catch(x){toast('That file is not a CYCLONE network');}};
+    r.onerror=()=>toast('Could not read that file');r.readAsText(f);};
+  card.querySelectorAll('[data-lo]').forEach(b=>b.onclick=()=>{const rec=libGet().find(x=>String(x.id)===b.dataset.lo);if(!rec)return;pushUndo();loadModel(JSON.parse(JSON.stringify(rec.model)));model.name=rec.name;save();render();closeModal();toast('Opened “'+rec.name+'”');});
+  card.querySelectorAll('[data-ld]').forEach(b=>b.onclick=()=>{if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Sure?';b.style.fontWeight='700';setTimeout(()=>{if(b.isConnected){b.dataset.arm='';b.textContent='Delete';b.style.fontWeight='';}},3000);return;}
+    libSet(libGet().filter(x=>String(x.id)!==b.dataset.ld));openMenu();toast('Deleted');});}
+
+
+function resultsCsv(){const R=results,S=R.S,O=ov(S,R.per),q=v=>'"'+String(v).replace(/"/g,'""')+'"',L=[];
+  L.push([q('CYCLONE results'),q(model.name||'')].join(','));
+  L.push(['Run length',S.stopMode==='count'?'until '+S.cycles+' counts':S.horizon+' '+S.tunit].map(q).join(','));
+  L.push(['Replications',R.reps,'Seed',S.seed,'Quantity per count',S.load,'Unit',S.unit,'Time unit',S.tunit].map(q).join(','));
+  L.push('');L.push(['Counter','Count per run',O.u+' per '+O.per,'95% CI',O.u+' per '+S.tunit,S.tunit+' per count'].map(q).join(','));
+  R.counters.forEach(c=>L.push([c.num+' '+c.name,c.cnt.m,c.rate.m*O.k,R.reps>1?c.rate.ci*O.k:'',c.perT*O.kT,c.cyc].map(v=>typeof v==='number'?+v.toFixed(5):q(v)).join(',')));
+  L.push('');L.push(['Task','Starts per run','Average busy'].map(q).join(','));
+  R.tasks.forEach(t=>L.push([q(t.num+' '+t.name),+t.starts.toFixed(3),+t.busy.toFixed(4)].join(',')));
+  L.push('');L.push(['Queue','Average','Maximum','% time not empty','Average wait ('+S.tunit+')','At end'].map(q).join(','));
+  R.queues.forEach(x=>L.push([q(x.num+' '+x.name),+x.len.toFixed(4),x.max,+x.ne.toFixed(2),+x.wait.toFixed(3),x.end].join(',')));
+  if(sweepRows&&sweepRows.length){L.push('');L.push(['Fleet sweep: units',O.u+' per '+O.per].map(q).join(','));sweepRows.forEach(r=>L.push([r.v,+(r.rate*O.k).toFixed(4)].join(',')));}
+  return L.join('\r\n');}
+async function copyCsv(){if(!results||!results.counters){toast('Run the simulation first');return;}
+  const t=resultsCsv();try{await navigator.clipboard.writeText(t);toast('Copied. Paste into Excel or Google Sheets');}
+  catch(e){const f=new File([t],fname(model.name||'results')+'_results.csv',{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);toast('Downloaded as a CSV file');}}
+/* ---------- PDF report ---------- */
+function openReport(){
+  if(!results||!results.counters){toast('Run the simulation first, then export the report');return;}
+  const card=$('#modalcard');let by='';try{by=localStorage.getItem('cyclone-by')||'';}catch(e){}
+  card.innerHTML=`<h4>PDF report</h4><p class="note" style="margin-top:0">The report has the diagram, legend, model data, simulation settings and results. Tap Create report, then in the print screen choose <b>Save as PDF</b>.</p>
+  <div class="f"><span>Report title</span><input id="rtitle" maxlength="90" value="${esc(model.name||'CYCLONE simulation report')}"></div>
+  <div class="f" style="margin-top:8px"><span>Prepared by (optional)</span><input id="rby" maxlength="60" value="${esc(by)}"></div>
+  <div class="f" style="margin-top:8px"><span>Page</span><select id="rori"><option value="portrait">Portrait</option><option value="landscape">Landscape (wide diagrams)</option></select></div>
+  <div class="f" style="margin-top:8px"><span>Notes and assumptions (optional)</span><textarea id="rnote" style="height:90px;font:inherit" placeholder="e.g. Cycle times taken from field observation, Pit A, Nov 2026"></textarea></div>
+  <div style="display:grid;gap:8px;margin-top:10px"><button id="rgo" class="pri">Create report</button><button id="rcl">Cancel</button></div>`;
+  showModal();$('#rcl').onclick=()=>closeModal();
+  $('#rgo').onclick=()=>{const o={title:$('#rtitle').value.trim()||'CYCLONE simulation report',by:$('#rby').value.trim(),ori:$('#rori').value,note:$('#rnote').value.trim()};
+    try{localStorage.setItem('cyclone-by',o.by);}catch(e){}
+    closeModal();setTimeout(()=>{try{buildReport(o);}catch(e){toast('Could not build the report');return;}setTimeout(()=>{try{window.print();}catch(e){toast('Printing is not available here');}},250);},200);};}
+function reportDiagram(){
+  const keep={sel,live,linkFrom};sel=null;live=null;linkFrom=null;render();
+  const w=$('#world');let bb;try{bb=w.getBBox();}catch(e){bb={x:0,y:0,width:600,height:400};}
+  const inner=w.innerHTML.replace(/url\(#ahs\)/g,'url(#rahs)').replace(/url\(#ah\)/g,'url(#rah)');
+  sel=keep.sel;live=keep.live;linkFrom=keep.linkFrom;render();
+  const p=24,x=bb.x-p,y=bb.y-p,W=bb.width+2*p,H=bb.height+2*p;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${W} ${H}" style="width:100%;height:auto;max-height:${W>H*1.2?'150':'200'}mm;border:.5pt solid #c9d1db;background:#fff">
+   <defs><marker id="rah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0,0L10,5L0,10z" fill="#69758a"/></marker><marker id="rahs" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0,0L10,5L0,10z" fill="#0f6b5c"/></marker></defs>${inner}</svg>`;}
+function reportLegend(){
+  const ic=sel=>{const e=document.querySelector(sel+' svg');return e?e.outerHTML:'';};
+  const r=[[ic('#tools [data-add=queue]'),'<b>Queue</b> (circle with a tick): idle units waiting, such as trucks or a loader. The number inside is the starting count. GEN n turns each arriving unit into n units.'],
+   [ic('#tools [data-add=combi]'),'<b>Combi task</b> (square with a corner slash): starts only when every queue feeding it holds a unit. If tasks compete, the lower node number goes first.'],
+   [ic('#tools [data-add=normal]'),'<b>Normal task</b> (plain square): starts as soon as a unit arrives, with no waiting condition.'],
+   [ic('#tools [data-add=func]'),'<b>Counter</b> (circle with a flag): counts the units passing and measures production.'],
+   [ic('#tools [data-add=con]'),'<b>CON n</b> (plain circle): consolidates n arriving units into one.'],
+   [ic('#tools [data-tool=link]'),'<b>Arrow</b>: the direction units move. Queues feed Combi tasks, and tasks pass units on.']];
+  return `<div class="leg">${r.map(x=>`<div>${x[0]}</div><div>${x[1]}</div>`).join('')}</div><p style="margin-top:6pt;font-size:9pt;color:#5b6778">Small numbers at the corner of a node are node numbers. Text under a task shows its duration: fixed, Tri (min/mode/max), U (min–max), N (mean±SD), Exp (mean).</p>`;}
+function buildReport(o){
+  const R=results,S=R.S,m=model,tu=esc(S.tunit),O=ov(S,R.per),u=esc(O.u),u0=esc(S.unit),per=O.per;
+  const date=new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+  const stop=S.stopMode==='count'?`until the counter reaches ${S.cycles} counts (time limit ${fmt(S.horizon,0)} ${tu})`:`for ${fmt(S.horizon,0)} ${tu} of simulated time`;
+  const c0=R.counters[0];
+  let h=`<h1>${esc(o.title)}</h1><div class="meta">${esc(date)}${o.by?' · Prepared by '+esc(o.by):''} · CYCLONE Simulator</div>`;
+  if(R.stale)h+=`<p class="warn"><b>Note:</b> the model was edited after the last run. Run the simulation again before relying on these results.</p>`;
+  if(c0)h+=`<div class="box"><div class="big">${fmt(c0.rate.m*O.k,O.d)} <span style="font-size:11pt;font-weight:400">${u} per ${per}</span></div>
+   <div>${R.reps>1?`95% confidence interval ± ${fmt(c0.rate.ci*O.k,O.d)} · `:''}${fmt(c0.perT*O.kT,4)} ${u}/${tu} · ${fmt(c0.cyc,2)} ${tu} per count · measured at “${esc(c0.name)}”</div></div>`;
+  h+=`<h2>1. Purpose and method</h2><p>This report presents a CYCLONE (Cyclic Operations Network) simulation of the operation described by the diagram in section 2. CYCLONE models a repetitive operation as resources (for example trucks and a loader) that move through activities and wait in queues. An activity starts when the resources it needs are available. Activity durations vary randomly, so the model is run many times and the results are averaged.</p>
+  <table><tr><th class="l">Setting</th><th class="l">Value</th></tr>
+  <tr><td>Run length</td><td class="l">${stop}</td></tr><tr><td>Replications</td><td class="l">${R.reps} (random seed ${esc(S.seed)})</td></tr>
+  <tr><td>Quantity per count</td><td class="l">${fmt(S.load,3)} ${u0}</td></tr><tr><td>Results shown as</td><td class="l">${u} per ${per}${O.note?' ('+esc(O.note)+')':''}</td></tr><tr><td>Time unit</td><td class="l">${tu}</td></tr></table>
+  <h2>2. Network diagram</h2><figure>${reportDiagram()}<figcaption>Figure 1. CYCLONE network${m.name?': '+esc(m.name):''}. Symbols are explained in section 3.</figcaption></figure>
+  <h2>3. Legend</h2>${reportLegend()}
+  <h2>4. Model data</h2><table><tr><th>No.</th><th class="l">Type</th><th class="l">Name</th><th>Start units</th><th class="l">Duration (${tu})</th><th class="l">Other</th></tr>
+  ${[...m.nodes].sort((a,b)=>a.num-b.num).map(n=>`<tr><td>${n.num}</td><td class="l">${esc(TNAME[n.type]||n.type)}</td><td class="l">${esc(n.name)}</td><td>${n.type==='queue'?n.init:'–'}</td><td class="l">${n.type==='combi'||n.type==='normal'?esc(distText(n)):'–'}</td><td class="l">${n.type==='con'?'CON '+n.k:(n.type==='queue'&&n.gen>1?'GEN '+n.gen:'')}</td></tr>`).join('')}</table>
+  <h2>5. Simulation results</h2>`;
+  if(R.capped)h+=`<p class="warn">${R.capped} run${R.capped>1?'s':''} stopped at the safety limit of 400,000 task starts, so results cover only about ${fmt(R.Tavg,1)} ${tu}.</p>`;
+  if(R.incomplete)h+=`<p class="warn">${R.incomplete} run${R.incomplete>1?'s':''} reached the time limit before ${S.cycles} counts.</p>`;
+  h+=`<p>${R.reps} run${R.reps>1?'s':''} of about ${fmt(R.Tavg,1)} ${tu} each.</p>`;
+  if(R.curve)h+=`<figure>${curveSvg(R.curve)}<figcaption>Figure 2. Cumulative count over time (first run).</figcaption></figure>`;
+  h+=`<h3>Production</h3><table><tr><th class="l">Counter</th><th>Count per run</th><th>${u} per ${per}</th>${R.reps>1?'<th>± 95% CI</th>':''}</tr>${R.counters.map(c=>`<tr><td class="l">${c.num} ${esc(c.name)}</td><td>${fmt(c.cnt.m,1)}</td><td>${fmt(c.rate.m*O.k,O.d)}</td>${R.reps>1?`<td>${fmt(c.rate.ci*O.k,O.d)}</td>`:''}</tr>`).join('')}</table>
+  <h3>Activities</h3><table><tr><th class="l">Task</th><th>Starts per run</th><th>Average busy</th></tr>${R.tasks.map(t=>`<tr><td class="l">${t.num} ${esc(t.name)}</td><td>${fmt(t.starts,1)}</td><td>${fmt(t.busy,2)}${t.type==='combi'&&t.busy<=1?` (${fmt(t.busy*100,0)}%)`:''}</td></tr>`).join('')}</table>
+  <h3>Queues (idle units)</h3><table><tr><th class="l">Queue</th><th>Average</th><th>Maximum</th><th>% time not empty</th><th>Average wait (${tu})</th><th>At end</th></tr>${R.queues.map(q=>`<tr><td class="l">${q.num} ${esc(q.name)}</td><td>${fmt(q.len,2)}</td><td>${fmt(q.max,0)}</td><td>${fmt(q.ne,1)}</td><td>${fmt(q.wait,1)}</td><td>${fmt(q.end,0)}</td></tr>`).join('')}</table>`;
+  if(sweepRows&&sweepRows.length){const mx=Math.max(...sweepRows.map(r=>r.rate)),best=sweepRows.find(r=>r.rate>=.95*mx);
+    h+=`<h3>Fleet sweep</h3><p>The model was re-run with different starting units in one queue. The highlighted row is the smallest number reaching 95% of the best result.</p><table><tr><th>Units</th><th>${u} per ${per}</th><th>Gain</th></tr>${sweepRows.map((r,i)=>`<tr class="${r===best?'best':''}"><td>${r.v}${r===best?' ★':''}</td><td>${fmt(r.rate*O.k,O.d)}</td><td>${i?(r.rate-sweepRows[i-1].rate>=0?'+':'')+fmt((r.rate-sweepRows[i-1].rate)*O.k,O.d):'–'}</td></tr>`).join('')}</table>`;}
+  const ins=(R.insights||[]);
+  h+=`<h2>6. Notes and interpretation</h2>${ins.length?'<ul>'+ins.map(t=>`<li>${t}</li>`).join('')+'</ul>':''}${o.note?`<p><b>Notes and assumptions:</b> ${esc(o.note).replace(/\n/g,'<br>')}</p>`:''}
+  <p>The results are estimates from a simulation. They depend on the activity durations and starting resources entered in the model, and on random variation between runs. Compare them with field measurements before using them for decisions.</p>
+  <div class="foot">Prepared with CYCLONE Simulator (method: Halpin, Construction Management, Cyclic Operations Network). ${esc(date)}.</div>`;
+  $('#report').innerHTML=h;
+  let st=document.getElementById('pgsize');if(!st){st=document.createElement('style');st.id='pgsize';document.head.appendChild(st);}
+  st.textContent=`@media print{@page{size:A4 ${o.ori}}}`;}
 function openMenu(){const card=$('#modalcard');
-  card.innerHTML=`<h4>Examples</h4><div style="display:grid;gap:6px">${Object.entries(EX).map(([k,e])=>`<button data-ex="${k}" style="text-align:left"><b>${esc(e.title)}</b><br><span class="mut" style="font-size:12px">${esc(e.sub)}</span></button>`).join('')}</div>
+  card.innerHTML=libHtml()+`<h4>Examples</h4><div style="display:grid;gap:6px">${Object.entries(EX).map(([k,e])=>`<button data-ex="${k}" style="text-align:left"><b>${esc(e.title)}</b><br><span class="mut" style="font-size:12px">${esc(e.sub)}</span></button>`).join('')}</div>
   <div class="row" style="margin-top:8px"><button id="mnew" style="flex:1">New blank project</button></div>
   <h4>Save or restore</h4><p class="note" style="margin-top:0">Copy this text to keep a backup. Paste a backup here and tap Apply to restore it. The app also remembers your work on this device.</p>
   <textarea id="mjson" spellcheck="false">${esc(JSON.stringify(model))}</textarea>
@@ -515,7 +775,7 @@ function openMenu(){const card=$('#modalcard');
   card.querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>{pushUndo();const e=EX[b.dataset.ex];loadModel(e.build());closeModal();toast(e.title);});
   $('#mnew').onclick=()=>{pushUndo();loadModel(blankModel());closeModal();};
   $('#mcopy').onclick=async()=>{const ta=$('#mjson');try{await navigator.clipboard.writeText(ta.value);toast('Copied');}catch(e){ta.select();toast('Select and copy the text manually');}};
-  $('#mapply').onclick=()=>{try{const m=JSON.parse($('#mjson').value);if(!Array.isArray(m.nodes)||!Array.isArray(m.arcs))throw 0;pushUndo();loadModel(m);closeModal();toast('Applied');}catch(e){toast('That text is not a valid project');}};}
+  $('#mapply').onclick=()=>{try{const m=JSON.parse($('#mjson').value);if(!Array.isArray(m.nodes)||!Array.isArray(m.arcs))throw 0;pushUndo();loadModel(m);closeModal();toast('Applied');}catch(e){toast('That text is not a valid project');}};bindLib(card);}
 function sanitize(m){const T=['queue','combi','normal','func','con'],seen=new Set();let nid=1;
   m.nodes=(m.nodes||[]).filter(n=>n&&T.includes(n.type)&&Number.isFinite(+n.x)&&Number.isFinite(+n.y));
   m.nodes.forEach(n=>{n.x=+n.x;n.y=+n.y;if(!Number.isFinite(+n.id)||seen.has(+n.id)){while(seen.has(nid))nid++;n.id=nid;}n.id=+n.id;seen.add(n.id);
@@ -533,7 +793,7 @@ function closeModal(){$('#modal').hidden=true;if(modalPushed){modalPushed=false;
 window.addEventListener('popstate',()=>{if(!$('#modal').hidden){modalPushed=false;$('#modal').hidden=true;}});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden)closeModal();});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
-$('#fab').onclick=fit;
+$('#fab').onclick=fit;$('#saveb').onclick=openSave;
 $('#cDel').onclick=()=>{if(!sel)return;sel.t==='n'?delNode(sel.id):delArc(sel.id);render();save();renderTab();};
 $('#cLink').onclick=()=>{if(!sel||sel.t!=='n')return toast('Select a node first');const id=sel.id;sel=null;setTool('link');linkFrom=id;render();toast('Now tap the node to link to');};
 $('#emEx').onclick=openMenu;
@@ -553,6 +813,18 @@ window.addEventListener('resize',()=>{fit();});
 (function init(){try{tipSeen=localStorage.getItem('cyclone-tip')==='1';}catch(e){}let m=null;try{m=JSON.parse(localStorage.getItem('cyclone-v1')||'null');}catch(e){}
   if(!m||!Array.isArray(m.nodes)||!m.nodes.length)m=exampleModel();
   model=sanitize(m);model.settings=Object.assign(blankModel().settings,model.settings||{});render();requestAnimationFrame(()=>{fit();});renderTab();})();
+
+(function(){const bar=document.getElementById('inst'),b=document.getElementById('instB'),t=document.getElementById('instT');let dp=null;
+ const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+ let dismissed=false;try{dismissed=localStorage.getItem('cyclone-inst')==='1';}catch(e){}
+ if(standalone||dismissed)return;
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;t.textContent='Install CYCLONE as an app on this device';b.hidden=false;bar.hidden=false;});
+ window.addEventListener('appinstalled',()=>{bar.hidden=true;});
+ b.onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice;}catch(e){}dp=null;bar.hidden=true;};
+ document.getElementById('instX').onclick=()=>{bar.hidden=true;try{localStorage.setItem('cyclone-inst','1');}catch(e){}};
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ if(ios){t.textContent='To install: tap Share, then Add to Home Screen';b.hidden=true;bar.hidden=false;}
+})();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
